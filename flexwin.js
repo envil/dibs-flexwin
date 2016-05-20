@@ -20,6 +20,21 @@ module.exports = {
   testMode: false,
 
   /*
+   *  Sets a global merchant id
+  */
+  merchantId: null,
+
+  /*
+   *  Sets a global api user
+  */
+  apiUser: null,
+
+  /*
+   *  Sets a global api password
+  */
+  apiPassword: null,
+
+  /*
    *  Endpoint for ticket creation
   */
   createTicketUri: 'https://payment.architrade.com/cgi-ssl/auth.cgi',
@@ -58,25 +73,44 @@ module.exports = {
     return this.dibsRequest(options, this.captureTransactionUri);
   },
 
+  /**
+   *  Endpoint for refunding transactions
+  */
+  refundTransactionUri: 'https://payment.architrade.com/cgi-adm/refund.cgi',
+
+  /**
+   *  Endpoint for refunding transactions
+  */
+  refundTransaction: function(options) {
+    return this.dibsRequest(options, this.refundTransactionUri, true);
+  },
+
   /*
    *  Executes the https request to the DIBS server and fulfills the promise
    *  with the response JSON Object
   */
-  dibsRequest: function(options, uri) {
+  dibsRequest: function(options, uri, authenticate) {
     if (this.testMode) {
       options.test = 'yes';
     }
+    if (!options.merchant && this.merchantId) {
+      options.merchant = this.merchantId;
+    }
+
     options.textreply = 'yes';
     options.fullreply = 'yes';
 
     var self = this;
     var d = q.defer();
 
-    request.post({
-      uri: uri,
-      form: options
-    },
-    function(err, res, body) {
+    var params = { uri: uri, form: options };
+    if (authenticate) {
+      params.auth = {};
+      params.auth.username = options.username || this.apiUser;
+      params.auth.password = options.password || this.apiPassword;
+    }
+
+    request.post(params, function(err, res, body) {
       if (err) {
         return d.reject(err);
       }
