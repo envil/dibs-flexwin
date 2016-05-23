@@ -30,6 +30,22 @@ Set a global test mode.
 flexwin.testMode = true;
 ```
 
+#### Merchant ID
+Set a global merchant ID.
+
+```
+flexwin.merchant = 12345678;
+```
+
+
+#### API Username and password
+Set global API credentials (used for methods requiring authentication).
+
+```
+flexwin.username = 'username';
+flexwin.password = 'password';
+```
+
 ### Methods
 
 All methods recieve the same arguments and returns a promise.
@@ -67,6 +83,13 @@ The second part of any transaction is the capture process. Usually this take pla
 
 ```
 flexwin.captureTransaction(options)
+```
+
+#### refundTransaction
+Refund a certain amount of the previously captured transaction.
+
+```
+flexwin.refundTransaction(options)
 ```
 
 ### Promises
