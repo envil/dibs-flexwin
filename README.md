@@ -69,6 +69,13 @@ The second part of any transaction is the capture process. Usually this take pla
 flexwin.captureTransaction(options)
 ```
 
+#### refundTransaction
+Refund a certain amount of the previously captured transaction.
+
+```
+flexwin.refundTransaction(options)
+```
+
 ### Promises
 `dibs-flexwin` uses the `q` library. It allows the following syntax:
 

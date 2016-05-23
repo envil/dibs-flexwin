@@ -22,17 +22,17 @@ module.exports = {
   /*
    *  Sets a global merchant id
   */
-  merchantId: null,
+  merchant: null,
 
   /*
-   *  Sets a global api user
+   *  Sets a global user
   */
-  apiUser: null,
+  username: null,
 
   /*
-   *  Sets a global api password
+   *  Sets a global password
   */
-  apiPassword: null,
+  password: null,
 
   /*
    *  Endpoint for ticket creation
@@ -93,8 +93,8 @@ module.exports = {
     if (this.testMode) {
       options.test = 'yes';
     }
-    if (!options.merchant && this.merchantId) {
-      options.merchant = this.merchantId;
+    if (!options.merchant && this.merchant) {
+      options.merchant = this.merchant;
     }
 
     options.textreply = 'yes';
@@ -106,8 +106,8 @@ module.exports = {
     var params = { uri: uri, form: options };
     if (authenticate) {
       params.auth = {};
-      params.auth.username = options.username || this.apiUser;
-      params.auth.password = options.password || this.apiPassword;
+      params.auth.username = options.username || this.username;
+      params.auth.password = options.password || this.password;
     }
 
     request.post(params, function(err, res, body) {
