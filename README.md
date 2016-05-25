@@ -92,6 +92,13 @@ Refund a certain amount of the previously captured transaction.
 flexwin.refundTransaction(options)
 ```
 
+#### cancelTransaction
+Cancel a previously authorized transaction.
+
+```
+flexwin.cancelTransaction(options)
+```
+
 ### Promises
 `dibs-flexwin` uses the `q` library. It allows the following syntax:
 
