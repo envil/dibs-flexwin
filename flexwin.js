@@ -85,6 +85,18 @@ module.exports = {
     return this.dibsRequest(options, this.refundTransactionUri, true);
   },
 
+  /**
+   *  Endpoint for cancelling transactions
+   */
+  cancelTransactionUri: 'https://payment.architrade.com/cgi-adm/cancel.cgi',
+
+  /**
+   *  Endpoint for cancelling transactions
+   */
+  cancelTransaction: function(options) {
+    return this.dibsRequest(options, this.cancelTransactionUri, true);
+  },
+
   /*
    *  Executes the https request to the DIBS server and fulfills the promise
    *  with the response JSON Object
