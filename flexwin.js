@@ -86,12 +86,12 @@ module.exports = {
   },
 
   /**
-   *  Endpoint for refunding transactions
+   *  Endpoint for cancelling transactions
    */
   cancelTransactionUri: 'https://payment.architrade.com/cgi-adm/cancel.cgi',
 
   /**
-   *  Endpoint for refunding transactions
+   *  Endpoint for cancelling transactions
    */
   cancelTransaction: function(options) {
     return this.dibsRequest(options, this.cancelTransactionUri, true);
