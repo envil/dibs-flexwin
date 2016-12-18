@@ -6,6 +6,7 @@
 
 var q = require('q');
 var request = require('request');
+var md5 = require('md5');
 
 request.defaults({
   jar: false,
@@ -33,6 +34,11 @@ module.exports = {
    *  Sets a global password
   */
   password: null,
+
+  /*
+   *  Sets a globale MD5 encryption keys
+   */
+  md5: { key1: null, key2: null },
 
   /*
    *  Endpoint for ticket creation
@@ -148,5 +154,11 @@ module.exports = {
       res[item[0]] = decodeURIComponent(item[1]);
     }
     return res;
+  },
+
+  getMD5Key: function(message, key1, key2) {
+    key1 = key1 || this.md5.key1;
+    key2 = key2 || this.md5.key2;
+    return md5(key2 + md5(key1 + message));
   }
 };
