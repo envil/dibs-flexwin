@@ -16,6 +16,7 @@
     "url": "https://github.com/front/dibs-flexwin.git"
   },
   "dependencies": {
+    "md5": "^2.2.1",
     "q": "^1.4.1",
     "request": "^2.65.0"
   },
