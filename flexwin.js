@@ -50,7 +50,7 @@ module.exports = {
    *  information for recurring payments.
   */
   createTicket: function(options) {
-    return this.dibsRequest(options, this.createTicketUri);
+    return this.dibsRequest(options, this.createTicketUri, ['merchant', 'orderid', 'currency', 'amount']);
   },
 
   /**
@@ -63,7 +63,7 @@ module.exports = {
    *  createTicket service.
   */
   authorizeTicket: function(options) {
-    return this.dibsRequest(options, this.authorizeTicketUri);
+    return this.dibsRequest(options, this.authorizeTicketUri, ['merchant', 'orderid', 'ticket', 'currency', 'amount']);
   },
 
   /**
@@ -76,7 +76,7 @@ module.exports = {
    *  at the time of shipping the goods to the customer.
   */
   captureTransaction: function(options) {
-    return this.dibsRequest(options, this.captureTransactionUri);
+    return this.dibsRequest(options, this.captureTransactionUri, ['merchant', 'orderid', 'transact', 'amount']);
   },
 
   /**
@@ -88,7 +88,7 @@ module.exports = {
    *  Endpoint for refunding transactions
   */
   refundTransaction: function(options) {
-    return this.dibsRequest(options, this.refundTransactionUri, true);
+    return this.dibsRequest(options, this.refundTransactionUri, ['merchant', 'orderid', 'transact', 'amount'], true);
   },
 
   /**
@@ -100,14 +100,14 @@ module.exports = {
    *  Endpoint for cancelling transactions
    */
   cancelTransaction: function(options) {
-    return this.dibsRequest(options, this.cancelTransactionUri, true);
+    return this.dibsRequest(options, this.cancelTransactionUri, ['merchant', 'orderid', 'transact'], true);
   },
 
   /*
    *  Executes the https request to the DIBS server and fulfills the promise
    *  with the response JSON Object
   */
-  dibsRequest: function(options, uri, authenticate) {
+  dibsRequest: function(options, uri, MD5Params,  authenticate) {
     if (this.testMode) {
       options.test = 'yes';
     }
@@ -126,6 +126,10 @@ module.exports = {
       params.auth = {};
       params.auth.username = options.username || this.username;
       params.auth.password = options.password || this.password;
+    }
+
+    if (self.md5.key1 && self.md5.key2) {
+      options.md5key = self.getMD5Key(MD5Params, options);
     }
 
     request.post(params, function(err, res, body) {
@@ -156,7 +160,28 @@ module.exports = {
     return res;
   },
 
-  getMD5Key: function(message, key1, key2) {
+  /**
+   * Generates the 'md5'
+   * @param  {[type]} MD5Params [description]
+   * @param  {[type]} options   [description]
+   * @return {[type]}           [description]
+   */
+  getMD5Key: function(MD5Params, options) {
+    var string = '';
+    MD5Params.forEach(function(param) {
+      string += param + '=' + options[param] + '&';
+    });
+    return this.encodeMD5(string.slice(0, -1));
+  },
+
+  /**
+   * Encodes a string using the setup keys
+   * @param  {[type]} message [description]
+   * @param  {[type]} key1    [description]
+   * @param  {[type]} key2    [description]
+   * @return {[type]}         [description]
+   */
+  encodeMD5: function(message, key1, key2) {
     key1 = key1 || this.md5.key1;
     key2 = key2 || this.md5.key2;
     return md5(key2 + md5(key1 + message));
