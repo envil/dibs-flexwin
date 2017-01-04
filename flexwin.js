@@ -169,7 +169,7 @@ module.exports = {
   getMD5Key: function(MD5Params, options) {
     var string = '';
     MD5Params.forEach(function(param) {
-      string += param + '=' + options[param] + '&';
+      string += param.toLowerCase() + '=' + options[param] + '&';
     });
     return this.encodeMD5(string.slice(0, -1));
   },
