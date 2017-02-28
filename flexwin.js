@@ -133,8 +133,8 @@ module.exports = {
     }
 
     request.post(params, function(err, res, body) {
-      if (err) {
-        return d.reject(err);
+      if (err || !res.statusCode.toString().startsWith(2)) {
+        return d.reject(err || body);
       }
       try {
         d.resolve(self.parseDibsResponse(body));
