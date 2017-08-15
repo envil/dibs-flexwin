@@ -50,7 +50,7 @@ module.exports = {
    *  information for recurring payments.
   */
   createTicket: function(options) {
-    return this.dibsRequest(options, this.createTicketUri, ['merchant', 'orderid', 'currency', 'amount']);
+    return this.dibsRequest(options, this.createTicketUri, ['merchant', 'orderid', 'preauth', 'currency', 'amount']);
   },
 
   /**
