@@ -50,7 +50,7 @@ module.exports = {
    *  information for recurring payments.
   */
   createTicket: function(options) {
-    return this.dibsRequest(options, this.createTicketUri, ['merchant', 'orderid', 'currency', 'amount']);
+    return this.dibsRequest(options, this.createTicketUri, ['merchant', 'orderid', 'preauth', 'currency', 'amount']);
   },
 
   /**
@@ -101,6 +101,19 @@ module.exports = {
    */
   cancelTransaction: function(options) {
     return this.dibsRequest(options, this.cancelTransactionUri, ['merchant', 'orderid', 'transact'], true);
+  },
+
+  /**
+   *  Endpoint for deleting ticket
+   */
+  delTicketUri: 'https://payment.architrade.com/cgi-adm/delticket.cgi',
+
+  /*
+   *  deleting tickets, with the result that the ticket
+   *  and its corresponding fixed transaction rules are deleted
+  */
+  delTicket: function(options) {
+    return this.dibsRequest(options, this.delTicketUri, ['merchant', 'ticket']);
   },
 
   /*
